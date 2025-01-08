@@ -56,9 +56,7 @@ tickLine={false}
 />
 <YAxis
 domain={[-2000000, 2000000]}
-axisLine={false}
-tickLine={false}
-tickFormatter={value => `$${(value / 1000).toFixed(0)}k`}
+hide ={true}
 />
 <Tooltip
 formatter={value => [`$${value.toLocaleString()}`, undefined]}
@@ -78,7 +76,7 @@ dataKey="wholesaleSales"
 name="Wholesale Sales"
 dot={false}
 strokeWidth={3}
-stroke="rgb(246, 70, 93)"
+stroke="rgb(122, 119, 120)"
 />
 </LineChart>
 </div>
