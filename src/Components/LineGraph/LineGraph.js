@@ -37,7 +37,7 @@ chartData.sort((a, b) => monthOrder.indexOf(a.month) - monthOrder.indexOf(b.mont
 
 return (
 <div className="w-full p-8">
-<div className="text-xl font-semibold mb-4">Monthly Average Sales Comparison</div>
+<div className="text-xl font-semibold mb-4">Retail Sales</div>
 <LineChart
 data={chartData}
 width={1260}
@@ -61,7 +61,7 @@ hide ={true}
 <Tooltip
 formatter={value => [`$${value.toLocaleString()}`, undefined]}
 />
-<Legend />
+
 <Line
 type="monotone"
 dataKey="retailSales"
