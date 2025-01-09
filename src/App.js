@@ -1,59 +1,61 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDataStart, fetchDataSuccess, fetchDataFailure } from './redux/dataSlice';
 import Header from './Components/Header/Header';
 import LineGraph from './Components/LineGraph/LineGraph';
 import ProductOverview from './Components/ProductOverview/ProductOverview';
 import DataTable from './Components/DataTable/DataTable';
 import apiData from './util/data.json';
-import "./App.css";
+import './App.css';
 
 const App = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { data, loading } = useSelector((state) => state.data);
 
   useEffect(() => {
-    (async () => {
+    const simulateApiCall = () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(apiData);
+        }, 1000);
+      });
+    };
+
+    const fetchData = async () => {
+      dispatch(fetchDataStart());
       try {
         const response = await simulateApiCall();
-        setData(response);
+        dispatch(fetchDataSuccess(response));
       } catch (error) {
-        console.error('Error fetching data:', error.message);
-      }finally{
-        setLoading(false);
+        dispatch(fetchDataFailure(error.message));
       }
-    })()
-  },[]);
+    };
 
-  const simulateApiCall = () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(apiData);
-      }, 1000); 
-    });
-  };
+    fetchData();
+  }, [dispatch]);
 
   return (
     <>
-      
-      {loading && ( 
+      {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
         </div>
       )}
 
-      {!loading && (
+      {!loading && data && (
         <>
           <Header />
           <div className="main-content">
-            <ProductOverview data={data}/>
+            <ProductOverview data={data} />
             <div className="bar">
-              <LineGraph sales={data.sales}/>
-              <DataTable sales={data.sales}  />
+              <LineGraph sales={data.sales} />
+              <DataTable sales={data.sales} />
             </div>
           </div>
         </>
       )}
     </>
   );
-}
+};
 
 export default App;
